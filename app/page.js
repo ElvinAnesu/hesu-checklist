@@ -1,45 +1,47 @@
 export default function Home() {
   const checklistItems = [
-    { id: 1, item: "Server", checked: "Yes", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "08:15 AM" },
-    { id: 2, item: "Network", checked: "Yes", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "08:20 AM" },
-    { id: 3, item: "SAP system", checked: "Yes", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "08:25 AM" },
-    { id: 4, item: "Depot manager system", checked: "Yes", issuesFound: "System running slow", checkedBy: "Ibrahim Msambwe", checkedAt: "08:30 AM" },
-    { id: 5, item: "Stackwise system", checked: "Yes", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "08:35 AM" },
+    { id: 1, item: "Server Room", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 2, item: "Documentation", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 3, item: "Transport", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 4, item: "Finance", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 6, item: "HR", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 7, item: "BoardRoom", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 8, item: "QAC", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
   ];
 
   const activityLog = [
-    { 
-      id: 1, 
-      office: "Finance Department", 
-      affectedPerson: "John Kamau", 
-      activity: "Fixed printer connection issue", 
-      issue: "Printer not responding",
-      technician: "Ibrahim Msambwe" 
-    },
-    { 
-      id: 2, 
-      office: "HR Department", 
-      affectedPerson: "Mary Njeri", 
-      activity: "Updated system software", 
-      issue: "Outdated software version",
-      technician: "Ibrahim Msambwe" 
-    },
-    { 
-      id: 3, 
-      office: "Operations", 
-      affectedPerson: "Peter Ochieng", 
-      activity: "Resolved network connectivity problem", 
-      issue: "Network cable unplugged",
-      technician: "Ibrahim Msambwe" 
-    },
-    { 
-      id: 4, 
-      office: "Depot Manager Office", 
-      affectedPerson: "James Kimani", 
-      activity: "Depot manager system running slow - cleared cache", 
-      issue: "System running slow",
-      technician: "Ibrahim Msambwe" 
-    },
+    // { 
+    //   id: 1, 
+    //   office: "Finance Department", 
+    //   affectedPerson: "John Kamau", 
+    //   activity: "Fixed printer connection issue", 
+    //   issue: "Printer not responding",
+    //   technician: "Ibrahim Msambwe" 
+    // },
+    // { 
+    //   id: 2, 
+    //   office: "HR Department", 
+    //   affectedPerson: "Mary Njeri", 
+    //   activity: "Updated system software", 
+    //   issue: "Outdated software version",
+    //   technician: "Ibrahim Msambwe" 
+    // },
+    // { 
+    //   id: 3, 
+    //   office: "Operations", 
+    //   affectedPerson: "Peter Ochieng", 
+    //   activity: "Resolved network connectivity problem", 
+    //   issue: "Network cable unplugged",
+    //   technician: "Ibrahim Msambwe" 
+    // },
+    // { 
+    //   id: 4, 
+    //   office: "Depot Manager Office", 
+    //   affectedPerson: "James Kimani", 
+    //   activity: "Depot manager system running slow - cleared cache", 
+    //   issue: "System running slow",
+    //   technician: "Ibrahim Msambwe" 
+    // },
   ];
 
   return (
@@ -53,17 +55,18 @@ export default function Home() {
             <table className="w-full border-collapse bg-white text-sm">
               <thead>
                 <tr className="bg-blue-600 text-white text-center">
-                  <th colSpan="6" className="px-3 py-2 text-sm font-bold border border-gray-300">
+                  <th colSpan="7" className="px-3 py-2 text-sm font-bold border border-gray-300">
                     DAILY SYSTEM CHECKLIST
                   </th>
                 </tr>
                 <tr className="bg-gray-200 text-black">
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">SN</th>
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">SYSTEM/ITEM</th>
+                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">Office</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">CHECKED</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">ISSUES FOUND</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">CHECKED BY</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">CHECKED AT</th>
+                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">DETAILS</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,6 +81,7 @@ export default function Home() {
                     <td className="px-3 py-2 border border-gray-300">{item.issuesFound}</td>
                     <td className="px-3 py-2 border border-gray-300">{item.checkedBy}</td>
                     <td className="px-3 py-2 border border-gray-300">{item.checkedAt}</td>
+                    <td className="px-3 py-2 border border-gray-300"><a href="#">View</a></td>
                   </tr>
                 ))}
               </tbody>
