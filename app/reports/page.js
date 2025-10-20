@@ -46,24 +46,6 @@ export default function Reports() {
       issue: "System running slow",
       technician: "Ibrahim Msambwe" 
     },
-    { 
-      id: 5, 
-      date: "2024-10-08",
-      office: "Sales Department", 
-      affectedPerson: "Grace Muthoni", 
-      activity: "Installed new software", 
-      issue: "Missing required application",
-      technician: "Sarah Wanjiku" 
-    },
-    { 
-      id: 6, 
-      date: "2024-10-08",
-      office: "Accounts", 
-      affectedPerson: "Daniel Omondi", 
-      activity: "Fixed email configuration", 
-      issue: "Email not syncing",
-      technician: "Sarah Wanjiku" 
-    },
   ];
 
   // Get unique technician names
