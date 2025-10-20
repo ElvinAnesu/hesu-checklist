@@ -1,48 +1,54 @@
-export default function Home() {
-  const checklistItems = [
-    { id: 1, office: "Server Room", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 2, office: "Documentation", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 3, office: "Transport", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 4, office: "Finance", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 6, office: "HR", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 7, office: "BoardRoom", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 8, office: "QAC", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-  ];
+"use client";
+import { useState, useEffect } from "react";
+import { supabase } from "../supabase";
 
-  const activityLog = [
-    // { 
-    //   id: 1, 
-    //   office: "Finance Department", 
-    //   affectedPerson: "John Kamau", 
-    //   activity: "Fixed printer connection issue", 
-    //   issue: "Printer not responding",
-    //   technician: "Ibrahim Msambwe" 
-    // },
-    // { 
-    //   id: 2, 
-    //   office: "HR Department", 
-    //   affectedPerson: "Mary Njeri", 
-    //   activity: "Updated system software", 
-    //   issue: "Outdated software version",
-    //   technician: "Ibrahim Msambwe" 
-    // },
-    // { 
-    //   id: 3, 
-    //   office: "Operations", 
-    //   affectedPerson: "Peter Ochieng", 
-    //   activity: "Resolved network connectivity problem", 
-    //   issue: "Network cable unplugged",
-    //   technician: "Ibrahim Msambwe" 
-    // },
-    // { 
-    //   id: 4, 
-    //   office: "Depot Manager Office", 
-    //   affectedPerson: "James Kimani", 
-    //   activity: "Depot manager system running slow - cleared cache", 
-    //   issue: "System running slow",
-    //   technician: "Ibrahim Msambwe" 
-    // },
-  ];
+export default function Home() {
+  const [offices, setOffices] = useState([]);
+  const [checklistStatus, setChecklistStatus] = useState([]);
+
+  // Fetch offices from Supabase
+  const getOffices = async () => { 
+    const { data, error } = await supabase.from("offices").select("*").order("id");
+    if (!error) {
+      setOffices(data || []);
+    }
+  };
+
+  // Fetch checklist status for each office from activity-logs
+  const fetchChecklistFields = async (officeList) => {
+    const today = new Date();
+    const dateStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
+    let statusMap = {};
+    // Run all queries in parallel for performance
+    await Promise.all(
+      officeList.map(async (office) => {
+        const { data, error } = await supabase
+          .from("activity-logs")
+          .select("*")
+          .eq("office", office.id)
+          .gte("created_at", `${dateStr}T00:00:00Z`);
+          
+        statusMap[office.id] = (data && data.length > 0) ? data : "No";
+      })
+    );
+    //alert(JSON.stringify(data));
+    setChecklistStatus(statusMap);
+  };
+
+  useEffect(() => {
+    getOffices();
+  }, []);
+
+  useEffect(() => {
+    if (offices.length > 0) {
+      fetchChecklistFields(offices);
+    }
+    // eslint-disable-next-line
+  }, [offices]);
+
+  const defaultIssues = "None";
+  const defaultCheckedBy = "-";
+  const defaultCheckedAt = "-";
 
   return (
     <div className="min-h-screen p-8">
@@ -70,19 +76,16 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {checklistItems.map((office, index) => (
-                  <tr 
-                    key={office.id} 
-                    className="bg-white text-xs"
-                  >
-                    <td className="px-3 py-2 border border-gray-300">{office.id}</td>
+                { offices.map((office, index) => (
+                  <tr key={office.id} className="bg-white text-xs">
+                    <td className="px-3 py-2 border border-gray-300">{index + 1}</td>
                     <td className="px-3 py-2 border border-gray-300">{office.office}</td>
-                    <td className="px-3 py-2 border border-gray-300">{office.checked}</td>
-                    <td className="px-3 py-2 border border-gray-300">{office.issuesFound}</td>
-                    <td className="px-3 py-2 border border-gray-300">{office.checkedBy}</td>
-                    <td className="px-3 py-2 border border-gray-300">{office.checkedAt}</td>
+                    <td className="px-3 py-2 border border-gray-300">{checklistStatus?.[office?.id]?.[index]?.id? "YES" : "No" }</td>
+                    <td className="px-3 py-2 border border-gray-300">{checklistStatus?.[office?.id]?.[index]?.issues_found || "-" }</td>
+                    <td className="px-3 py-2 border border-gray-300">{checklistStatus?.[office?.id]?.[index]?.checkedby || "-" }</td>
+                    <td className="px-3 py-2 border border-gray-300">{checklistStatus?.[office?.id]?.[index]?.created_at || "-"}</td>
                     <td className="px-3 py-2 border border-gray-300">
-                      <a href={`/office-details/${office.id}`} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors text-xs font-semibold">View</a>
+                      <a href={`/office-details/${office?.id}`} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors text-xs font-semibold">View</a>
                     </td>
                   </tr>
                 ))}
@@ -118,18 +121,48 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {activityLog.map((log, index) => (
+                {/* activityLog.map((log, index) => ( */}
                   <tr 
-                    key={log.id} 
+                    key={1} 
                     className="bg-white text-xs"
                   >
-                    <td className="px-3 py-2 border border-gray-300">{log.office}</td>
-                    <td className="px-3 py-2 border border-gray-300">{log.affectedPerson}</td>
-                    <td className="px-3 py-2 border border-gray-300">{log.issue}</td>
-                    <td className="px-3 py-2 border border-gray-300">{log.activity}</td>
-                    <td className="px-3 py-2 border border-gray-300">{log.technician}</td>
+                    <td className="px-3 py-2 border border-gray-300">Finance Department</td>
+                    <td className="px-3 py-2 border border-gray-300">John Kamau</td>
+                    <td className="px-3 py-2 border border-gray-300">Printer not responding</td>
+                    <td className="px-3 py-2 border border-gray-300">Fixed printer connection issue</td>
+                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
                   </tr>
-                ))}
+                  <tr 
+                    key={2} 
+                    className="bg-white text-xs"
+                  >
+                    <td className="px-3 py-2 border border-gray-300">HR Department</td>
+                    <td className="px-3 py-2 border border-gray-300">Mary Njeri</td>
+                    <td className="px-3 py-2 border border-gray-300">Outdated software version</td>
+                    <td className="px-3 py-2 border border-gray-300">Updated system software</td>
+                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
+                  </tr>
+                  <tr 
+                    key={3} 
+                    className="bg-white text-xs"
+                  >
+                    <td className="px-3 py-2 border border-gray-300">Operations</td>
+                    <td className="px-3 py-2 border border-gray-300">Peter Ochieng</td>
+                    <td className="px-3 py-2 border border-gray-300">Network cable unplugged</td>
+                    <td className="px-3 py-2 border border-gray-300">Resolved network connectivity problem</td>
+                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
+                  </tr>
+                  <tr 
+                    key={4} 
+                    className="bg-white text-xs"
+                  >
+                    <td className="px-3 py-2 border border-gray-300">Depot Manager Office</td>
+                    <td className="px-3 py-2 border border-gray-300">James Kimani</td>
+                    <td className="px-3 py-2 border border-gray-300">System running slow</td>
+                    <td className="px-3 py-2 border border-gray-300">Depot manager system running slow - cleared cache</td>
+                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
+                  </tr>
+                {/* ))} */}
               </tbody>
             </table>
           </div>
