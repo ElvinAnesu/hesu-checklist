@@ -1,12 +1,12 @@
 export default function Home() {
   const checklistItems = [
-    { id: 1, item: "Server Room", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 2, item: "Documentation", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 3, item: "Transport", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 4, item: "Finance", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 6, item: "HR", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 7, item: "BoardRoom", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
-    { id: 8, item: "QAC", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 1, office: "Server Room", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 2, office: "Documentation", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 3, office: "Transport", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 4, office: "Finance", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 6, office: "HR", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 7, office: "BoardRoom", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
+    { id: 8, office: "QAC", checked: "No", issuesFound: "None", checkedBy: "Ibrahim Msambwe", checkedAt: "-" },
   ];
 
   const activityLog = [
@@ -56,32 +56,34 @@ export default function Home() {
               <thead>
                 <tr className="bg-blue-600 text-white text-center">
                   <th colSpan="7" className="px-3 py-2 text-sm font-bold border border-gray-300">
-                    DAILY SYSTEM CHECKLIST
+                    DAILY CHECKLIST
                   </th>
                 </tr>
                 <tr className="bg-gray-200 text-black">
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">SN</th>
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">Office</th>
+                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">OFFICE</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">CHECKED</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">ISSUES FOUND</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">CHECKED BY</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">CHECKED AT</th>
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">DETAILS</th>
+                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
-                {checklistItems.map((item, index) => (
+                {checklistItems.map((office, index) => (
                   <tr 
-                    key={item.id} 
+                    key={office.id} 
                     className="bg-white text-xs"
                   >
-                    <td className="px-3 py-2 border border-gray-300">{item.id}</td>
-                    <td className="px-3 py-2 border border-gray-300">{item.item}</td>
-                    <td className="px-3 py-2 border border-gray-300">{item.checked}</td>
-                    <td className="px-3 py-2 border border-gray-300">{item.issuesFound}</td>
-                    <td className="px-3 py-2 border border-gray-300">{item.checkedBy}</td>
-                    <td className="px-3 py-2 border border-gray-300">{item.checkedAt}</td>
-                    <td className="px-3 py-2 border border-gray-300"><a href="#">View</a></td>
+                    <td className="px-3 py-2 border border-gray-300">{office.id}</td>
+                    <td className="px-3 py-2 border border-gray-300">{office.office}</td>
+                    <td className="px-3 py-2 border border-gray-300">{office.checked}</td>
+                    <td className="px-3 py-2 border border-gray-300">{office.issuesFound}</td>
+                    <td className="px-3 py-2 border border-gray-300">{office.checkedBy}</td>
+                    <td className="px-3 py-2 border border-gray-300">{office.checkedAt}</td>
+                    <td className="px-3 py-2 border border-gray-300">
+                      <a href={`/office-details/${office.id}`} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors text-xs font-semibold">View</a>
+                    </td>
                   </tr>
                 ))}
               </tbody>
