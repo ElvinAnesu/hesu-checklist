@@ -10,42 +10,7 @@ export default function Reports() {
 
   // Mock data - in a real app, this would come from a database
   const allActivities = [
-    { 
-      id: 1, 
-      date: "2024-10-10",
-      office: "Finance Department", 
-      affectedPerson: "John Kamau", 
-      activity: "Fixed printer connection issue", 
-      issue: "Printer not responding",
-      technician: "Ibrahim Msambwe" 
-    },
-    { 
-      id: 2, 
-      date: "2024-10-10",
-      office: "HR Department", 
-      affectedPerson: "Mary Njeri", 
-      activity: "Updated system software", 
-      issue: "Outdated software version",
-      technician: "Ibrahim Msambwe" 
-    },
-    { 
-      id: 3, 
-      date: "2024-10-09",
-      office: "Operations", 
-      affectedPerson: "Peter Ochieng", 
-      activity: "Resolved network connectivity problem", 
-      issue: "Network cable unplugged",
-      technician: "Ibrahim Msambwe" 
-    },
-    { 
-      id: 4, 
-      date: "2024-10-09",
-      office: "Depot Manager Office", 
-      affectedPerson: "James Kimani", 
-      activity: "Depot manager system running slow - cleared cache", 
-      issue: "System running slow",
-      technician: "Ibrahim Msambwe" 
-    },
+   
   ];
 
   // Get unique technician names
