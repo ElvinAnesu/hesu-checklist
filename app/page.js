@@ -25,8 +25,8 @@ export default function Home() {
         const { data, error } = await supabase
           .from("activity-logs")
           .select("*")
-          .eq("office", office.id)
-          .gte("created_at", `${dateStr}T00:00:00Z`);
+          .eq("office", office.id);
+          //.gte("created_at", `${dateStr}T00:00:00Z`);
           
         statusMap[office.id] = (data && data.length > 0) ? data : "No";
       })
