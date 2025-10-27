@@ -31,7 +31,7 @@ export default function Home() {
         statusMap[office.id] = (data && data.length > 0) ? data : "No";
       })
     );
-    alert(JSON.stringify(statusMap));
+   // alert(JSON.stringify(statusMap));
     setChecklistStatus(statusMap);
   };
 
