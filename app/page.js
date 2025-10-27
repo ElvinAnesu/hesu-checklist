@@ -126,41 +126,11 @@ export default function Home() {
                     key={1} 
                     className="bg-white text-xs"
                   >
-                    <td className="px-3 py-2 border border-gray-300">Finance Department</td>
-                    <td className="px-3 py-2 border border-gray-300">John Kamau</td>
-                    <td className="px-3 py-2 border border-gray-300">Printer not responding</td>
-                    <td className="px-3 py-2 border border-gray-300">Fixed printer connection issue</td>
-                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
-                  </tr>
-                  <tr 
-                    key={2} 
-                    className="bg-white text-xs"
-                  >
-                    <td className="px-3 py-2 border border-gray-300">HR Department</td>
-                    <td className="px-3 py-2 border border-gray-300">Mary Njeri</td>
-                    <td className="px-3 py-2 border border-gray-300">Outdated software version</td>
-                    <td className="px-3 py-2 border border-gray-300">Updated system software</td>
-                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
-                  </tr>
-                  <tr 
-                    key={3} 
-                    className="bg-white text-xs"
-                  >
-                    <td className="px-3 py-2 border border-gray-300">Operations</td>
-                    <td className="px-3 py-2 border border-gray-300">Peter Ochieng</td>
-                    <td className="px-3 py-2 border border-gray-300">Network cable unplugged</td>
-                    <td className="px-3 py-2 border border-gray-300">Resolved network connectivity problem</td>
-                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
-                  </tr>
-                  <tr 
-                    key={4} 
-                    className="bg-white text-xs"
-                  >
-                    <td className="px-3 py-2 border border-gray-300">Depot Manager Office</td>
-                    <td className="px-3 py-2 border border-gray-300">James Kimani</td>
-                    <td className="px-3 py-2 border border-gray-300">System running slow</td>
-                    <td className="px-3 py-2 border border-gray-300">Depot manager system running slow - cleared cache</td>
-                    <td className="px-3 py-2 border border-gray-300">Ibrahim Msambwe</td>
+                    <td className="px-3 py-2 border border-gray-300"></td>
+                    <td className="px-3 py-2 border border-gray-300"></td>
+                    <td className="px-3 py-2 border border-gray-300"></td>
+                    <td className="px-3 py-2 border border-gray-300"></td>
+                    <td className="px-3 py-2 border border-gray-300"></td>
                   </tr>
                 {/* ))} */}
               </tbody>
