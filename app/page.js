@@ -16,22 +16,20 @@ export default function Home() {
 
   // Fetch checklist status for each office from activity-logs
   const fetchChecklistFields = async (officeList) => {
-    const today = new Date();
-    const dateStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
-    let statusMap = {};
-    // Run all queries in parallel for performance
-    await Promise.all(
+    const results = await Promise.all(
       officeList.map(async (office) => {
         const { data, error } = await supabase
           .from("activity-logs")
           .select("*")
           .eq("office", office.id);
-          //.gte("created_at", `${dateStr}T00:00:00Z`);
-          
-        statusMap[office.id] = (data && data.length > 0) ? data : "No";
+        return { id: office.id, value: (data && data.length > 0) ? data : "No" };
       })
     );
-   // alert(JSON.stringify(statusMap));
+    // Reduce the results array into an object map
+    const statusMap = results.reduce((acc, curr) => {
+      acc[curr.id] = curr.value;
+      return acc;
+    }, {});
     setChecklistStatus(statusMap);
   };
 
@@ -46,9 +44,6 @@ export default function Home() {
     // eslint-disable-next-line
   }, [offices]);
 
-  const defaultIssues = "None";
-  const defaultCheckedBy = "-";
-  const defaultCheckedAt = "-";
 
   return (
     <div className="min-h-screen p-8">
