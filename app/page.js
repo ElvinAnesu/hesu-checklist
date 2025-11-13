@@ -8,7 +8,10 @@ export default function Home() {
 
   // Fetch offices from Supabase
   const getOffices = async () => { 
-    const { data, error } = await supabase.from("offices").select("*").order("id");
+    const { data, error } = await supabase.from("offices")
+      .select("*")
+      .order("last_checked_at", { ascending: false, nullsLast: true })
+      .order("id", { ascending: true });
     if (!error) {
       setOffices(data || []);
     }
@@ -78,22 +81,30 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold text-center mb-6">HESU IT Department Daily Checklist</h1>
-      
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-10">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-700 tracking-tight drop-shadow-md text-center sm:text-left">HESU IT Department Daily Checklist</h1>
+        <a
+          href="/reports"
+          className="mt-6 sm:mt-0 sm:ml-4 bg-blue-600 text-white px-6 py-2 text-lg font-semibold rounded shadow-lg hover:bg-blue-700 transition-colors"
+        >
+          Reports
+        </a>
+      </div>
       <div className="max-w-6xl mx-auto space-y-6">
-        {/* Daily Checklist Table */}
+        {/* Today's Checklist Table */}
         <div>
           <div className="overflow-x-auto border border-gray-300">
             <table className="w-full border-collapse bg-white text-sm">
               <thead>
                 <tr className="bg-blue-600 text-white text-center">
-                  <th colSpan="7" className="px-3 py-2 text-sm font-bold border border-gray-300">
-                    DAILY CHECKLIST
+                  <th colSpan="8" className="px-3 py-2 text-sm font-bold border border-gray-300">
+                    TODAY&apos;S CHECKLIST
                   </th>
                 </tr>
                 <tr className="bg-gray-200 text-black">
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">SN</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">OFFICE</th>
+                  <th className="px-3 py-2 text-xs text-center font-semibold border border-gray-300">CHECK</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">ISSUES FOUND</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">CHECKED BY</th>
                   <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">LAST CHECKED AT</th>
@@ -101,62 +112,30 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                { offices.map((office, index) => (
-                  <tr key={office.id} className="bg-white text-xs">
-                    <td className="px-3 py-2 border border-gray-300">{index + 1}</td>
-                    <td className="px-3 py-2 border border-gray-300">{office.office}</td>
-                    <td className="px-3 py-2 border border-gray-300">{office?.issues_found}</td>
-                    <td className="px-3 py-2 border border-gray-300">{office.last_checked_by}</td>
-                    <td className="px-3 py-2 border border-gray-300">{formatLastCheckedAt(office?.last_checked_at)}</td>
-                    <td className="px-3 py-2 border border-gray-300">
-                      <a href={`/office-details/${office?.id}`} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors text-xs font-semibold">View</a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Activity Log Table */}
-        <div>
-          <div className="flex justify-end mb-3">
-            <a 
-              href="/reports"
-              className="bg-blue-600 text-white px-4 py-2 text-sm font-semibold rounded hover:bg-blue-700 transition-colors"
-            >
-              Reports
-            </a>
-          </div>
-          <div className="overflow-x-auto border border-gray-300">
-            <table className="w-full border-collapse bg-white text-sm">
-              <thead>
-                <tr className="bg-green-600 text-white text-center">
-                  <th colSpan="5" className="px-3 py-2 text-sm font-bold border border-gray-300">
-                    ACTIVITY LOG
-                  </th>
-                </tr>
-                <tr className="bg-gray-200 text-black">
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">OFFICE</th>
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">AFFECTED PERSON</th>
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">ISSUE</th>
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">ACTIVITY</th>
-                  <th className="px-3 py-2 text-xs text-left font-semibold border border-gray-300">IT TECHNICIAN</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* activityLog.map((log, index) => ( */}
-                  <tr 
-                    key={1} 
-                    className="bg-white text-xs"
-                  >
-                    <td className="px-3 py-2 border border-gray-300"></td>
-                    <td className="px-3 py-2 border border-gray-300"></td>
-                    <td className="px-3 py-2 border border-gray-300"></td>
-                    <td className="px-3 py-2 border border-gray-300"></td>
-                    <td className="px-3 py-2 border border-gray-300"></td>
-                  </tr>
-                {/* ))} */}
+                { offices.map((office, index) => {
+                  // Check column logic
+                  let isToday = false;
+                  if (office?.last_checked_at) {
+                    const lastChecked = new Date(office.last_checked_at);
+                    const now = new Date();
+                    isToday = lastChecked.getFullYear() === now.getFullYear() &&
+                      lastChecked.getMonth() === now.getMonth() &&
+                      lastChecked.getDate() === now.getDate();
+                  }
+                  return (
+                    <tr key={office.id} className="bg-white text-xs">
+                      <td className="px-3 py-2 border border-gray-300">{index + 1}</td>
+                      <td className="px-3 py-2 border border-gray-300">{office.office}</td>
+                      <td className="px-3 py-2 border border-gray-300 text-center">{isToday ? <span className="text-green-600 text-lg">&#x2705;</span> : <span className="text-red-600 text-lg">&#10060;</span>}</td>
+                      <td className="px-3 py-2 border border-gray-300">{office?.issues_found}</td>
+                      <td className="px-3 py-2 border border-gray-300">{office.last_checked_by}</td>
+                      <td className="px-3 py-2 border border-gray-300">{formatLastCheckedAt(office?.last_checked_at)}</td>
+                      <td className="px-3 py-2 border border-gray-300">
+                        <a href={`/office-details/${office?.id}`} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors text-xs font-semibold">View</a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
